@@ -1,0 +1,34 @@
+@DatabaseDictionary.Api_HostAddress = http://localhost:5230
+
+### 健康檢查
+GET {{DatabaseDictionary.Api_HostAddress}}/health
+
+### 查詢表頭列表
+GET {{DatabaseDictionary.Api_HostAddress}}/api/headers?keyword=order
+Accept: application/json
+
+### 建立表頭
+POST {{DatabaseDictionary.Api_HostAddress}}/api/headers
+Content-Type: application/json
+
+{
+  "databaseName": "SalesDB",
+  "databaseHost": "192.168.1.10",
+  "objectType": "Table",
+  "objectName": "Orders",
+  "tableDescription": "訂單主檔",
+  "columns": [
+    { "sequence": 1, "columnName": "OrderId", "dataType": "int", "isNullable": false, "isPrimaryKey": true, "isIdentity": true }
+  ]
+}
+
+### 產生 CREATE TABLE SQL
+POST {{DatabaseDictionary.Api_HostAddress}}/api/sql/create-table
+Content-Type: application/json
+
+{
+  "objectName": "Orders",
+  "columns": [
+    { "sequence": 1, "columnName": "OrderId", "dataType": "int", "isNullable": false, "isPrimaryKey": true, "isIdentity": true }
+  ]
+}

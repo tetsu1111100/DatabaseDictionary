@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DatabaseDictionary.Api/DatabaseDictionary.Api.csproj" />
+    <Project Path="src/DatabaseDictionary.Core/DatabaseDictionary.Core.csproj" />
+    <Project Path="src/DatabaseDictionary.Infrastructure/DatabaseDictionary.Infrastructure.csproj" />
+  </Folder>
+</Solution>

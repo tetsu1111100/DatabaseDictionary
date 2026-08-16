@@ -1,0 +1,23 @@
+# .NET
+backend/**/bin/
+backend/**/obj/
+*.user
+
+# Node / Vite / Electron
+frontend/node_modules/
+frontend/dist/
+frontend/dist-electron/
+frontend/release/
+
+# Secrets / local overrides — never commit real credentials
+.env
+.env.*
+appsettings.*.local.json
+
+# IDE / OS
+.vs/
+.vscode/
+.idea/
+*.suo
+.DS_Store
+Thumbs.db
