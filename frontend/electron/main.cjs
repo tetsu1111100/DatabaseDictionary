@@ -10,16 +10,23 @@ let backendProcess = null;
 let mainWindow = null;
 
 function startBackend() {
-  // Dev: run the API project straight from source with `dotnet run`.
-  // Packaged builds should ship a self-contained publish output under `resources/backend`
-  // and switch this to launch that .exe directly — not wired up yet, MVP scope is dev-mode only.
-  const backendProjectDir = path.join(__dirname, '..', '..', 'backend', 'src', 'DatabaseDictionary.Api');
-
-  backendProcess = spawn('dotnet', ['run', '--urls', BACKEND_URL], {
-    cwd: backendProjectDir,
-    shell: true,
-    stdio: isDev ? 'inherit' : 'ignore',
-  });
+  if (isDev) {
+    // Dev: run the API project straight from source with `dotnet run`.
+    const backendProjectDir = path.join(__dirname, '..', '..', 'backend', 'src', 'DatabaseDictionary.Api');
+    backendProcess = spawn('dotnet', ['run', '--urls', BACKEND_URL], {
+      cwd: backendProjectDir,
+      shell: true,
+      stdio: 'inherit',
+    });
+  } else {
+    // Packaged: launch the self-contained exe that `npm run build:backend` published and
+    // electron-builder's `extraResources` copied into resources/backend alongside this app.
+    const backendExe = path.join(process.resourcesPath, 'backend', 'DatabaseDictionary.Api.exe');
+    backendProcess = spawn(backendExe, ['--urls', BACKEND_URL], {
+      cwd: path.dirname(backendExe),
+      stdio: 'ignore',
+    });
+  }
 
   backendProcess.on('error', (err) => {
     console.error('[backend] failed to start:', err);

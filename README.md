@@ -67,6 +67,19 @@ cd backend/src/DatabaseDictionary.Api
 dotnet run
 ```
 
+## 打包成免安裝執行檔（Windows portable）
+
+```bash
+cd frontend
+npm run dist
+```
+
+會依序執行：前端 `vite build` → 後端 `dotnet publish`（win-x64、self-contained、單一檔案，使用者電腦不需另外安裝 .NET Runtime）→ `electron-builder` 打包成免安裝的單一 exe。完成後在 `frontend/release/` 會產出 `DatabaseDictionary-<version>-portable.exe`，複製到任何 Windows 電腦上即可雙擊執行，不需安裝。
+
+後端會以已發佈的 exe 型態隨 Electron 一起啟動／關閉，不需要目標電腦裝 .NET SDK；appsettings.json 會跟著一起打包，之後如需改連線字串，可在解壓後的 `resources/backend/appsettings.json` 修改。
+
+> 打包出來的 exe 沒有數位簽章，使用者第一次執行 Windows SmartScreen 可能會跳警告，屬正常現象。
+
 ## 專案結構
 
 ```
@@ -88,5 +101,4 @@ frontend/
 - View／Function／Stored Procedure 的 SQL 產生功能（目前僅支援 Table）
 - View／Function／Stored Procedure 的「比對實際資料庫差異」功能（目前僅支援 Table）
 - SQL Server 以外的資料庫類型（MySQL、Oracle、PostgreSQL）
-- 正式封裝發布（`electron-builder` 打包、後端 `dotnet publish` 自維護執行檔），目前僅支援開發模式啟動
 - Excel 匯出或既有資料字典匯入

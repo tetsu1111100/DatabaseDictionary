@@ -9,7 +9,9 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "electron:dev": "concurrently -k -n VITE,ELECTRON -c blue,green \"npm:dev\" \"wait-on tcp:5173 && cross-env ELECTRON_DEV=true electron .\""
+    "electron:dev": "concurrently -k -n VITE,ELECTRON -c blue,green \"npm:dev\" \"wait-on tcp:5173 && cross-env ELECTRON_DEV=true electron .\"",
+    "build:backend": "dotnet publish ../backend/src/DatabaseDictionary.Api -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:IncludeAllContentForSelfExtract=true -o ../backend/publish",
+    "dist": "npm run build && npm run build:backend && electron-builder --win portable"
   },
   "dependencies": {
     "react": "^19.2.8",
@@ -33,5 +35,28 @@
     "typescript": "~6.0.2",
     "vite": "^8.2.0",
     "wait-on": "^9.1.0"
+  },
+  "build": {
+    "appId": "com.tetsu.databasedictionary",
+    "productName": "DatabaseDictionary",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../backend/publish",
+        "to": "backend"
+      }
+    ],
+    "win": {
+      "target": "portable"
+    },
+    "portable": {
+      "unpackDirName": "DatabaseDictionaryApp"
+    }
   }
 }
